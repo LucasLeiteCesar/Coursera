@@ -70,7 +70,7 @@ done
 
 if [[ $errorfile == true ]]
 then
-emailid="lucas.cesar@paymentology.com"
+emailid="teste@tes.com"
 mail -s "FAILED FILE: $errorfile $curr_date" $emailid < /bl/PayScheduler/nohup.out
 
 
