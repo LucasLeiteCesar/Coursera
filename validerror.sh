@@ -62,18 +62,26 @@ echo "Number errors $counterros at time $temp" >> errorsllc.log
 if [[ $counterros -gt 7 ]]
 then
 errorfile=true
+echo " " >> erromessage.log
+echo "Check Errors in PayRoute-Mastercard-2BU" >> erromessage.log
+message=$(grep "${temp}*" nohup.out | grep ERROR)
+echo $message >> erromessage.log
+echo " " >> erromessage.log
+
 fi
 
 
 counterros=0
+terro=0
+yerror=0
+zerror=0
 
 done
 
 if [[ $errorfile == true ]]
 then
-emailid="teste@teste.com"
-mail -s "Please check PayRoute-Mastercard-2BU on priority and engage Pt-SD team $curr" $emailid < /bl/PayRoute_DC_HSM_2BU/errorsllc.log
-
+emailid="lucas.cesar@paymentology.com,monitoring@paymentology.com,salik.hashmi@paymentology.com"
+mail -s "Please check PayRoute-Mastercard-2BU on priority and engage Pt-SD team $curr" $emailid < /bl/PayRoute_DC_HSM_2BU/erromessage.log
 
 fi
 
