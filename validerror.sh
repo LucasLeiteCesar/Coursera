@@ -80,7 +80,7 @@ done
 
 if [[ $errorfile == true ]]
 then
-emailid="lucas.cesar@paymentology.com,monitoring@paymentology.com,salik.hashmi@paymentology.com"
+emailid="teste@teste.com"
 mail -s "Please check PayRoute-Mastercard-2BU on priority and engage Pt-SD team $curr" $emailid < /bl/PayRoute_DC_HSM_2BU/erromessage.log
 
 fi
