@@ -3,19 +3,19 @@
 #resp=0
 #t=0
 
-cd /bl/PayScheduler
+cd /bl/PayRoute_DC_HSM_2BU
 #counterros=$(grep Error nohup.out | wc -l)
 #terro=$(grep error nohup.out | wc -l)
 
 #counterros=$((counterros + terro))
 
 
-#	if [[ $counterros -gt 0 ]]
-#		then
-#			echo "Number Errors $counterros "
-#			
+#       if [[ $counterros -gt 0 ]]
+#               then
+#                       echo "Number Errors $counterros "
 #
-#	fi
+#
+#       fi
 #
 #five=5
 #data=$(date '+%Y-%m-%d %H:%M:%S')
@@ -42,23 +42,24 @@ temp=$((interv-i))
 
 
 temp=$(date -d "($cur) -$temp mins" '+%Y-%m-%d %H:%M')
-echo $interv
-echo $i
+#echo $interv
+#echo $i
 
 i=$((i+1))
-echo $temp
+#echo $temp
 
 str=${temp}*
 
 terro=$(grep "${temp}*" nohup.out | grep Error | wc -l)
 yerror=$(grep "${temp}*" nohup.out | grep error | wc -l)
+zerror=$(grep "${temp}*" nohup.out | grep ERROR | wc -l)
+counterros=$((terro + yerror + zerror))
 
-counterros=$((terro + yerror))
+
+echo "Number errors $counterros at time $temp" >> errorsllc.log
 
 
-echo $counterros
-
-if [[ $counterros -gt 0 ]]
+if [[ $counterros -gt 7 ]]
 then
 errorfile=true
 fi
@@ -66,15 +67,14 @@ fi
 
 counterros=0
 
-done 
+done
 
 if [[ $errorfile == true ]]
 then
-emailid="teste@tes.com"
-mail -s "FAILED FILE: $errorfile $curr_date" $emailid < /bl/PayScheduler/nohup.out
+emailid="teste@teste.com"
+mail -s "Please check PayRoute-Mastercard-2BU on priority and engage Pt-SD team $curr" $emailid < /bl/PayRoute_DC_HSM_2BU/errorsllc.log
 
 
 fi
 
-echo $errorfile
-
+#echo $errorfile
