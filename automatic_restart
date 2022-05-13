@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# File: arrays.sh
+resp=0
+t=0
+while [[ $t -eq 0 ]]
+	do
+		echo "1 - If you want to Restart Application 1"
+		echo " "
+		echo "2 - If you want to Restart Application 2"
+		echo " "
+		echo "3 - If you want to Restart Application 3"
+		echo " "
+		echo "4 - If you want to Restart Application 4"
+	read resp
+	if [[ $resp -lt 0 ]]
+		then
+			echo "You put $resp where is negative number"
+			t=0
+
+	elif [[ $resp =~ [qwertyuiopasdfghjklzxcvbnm,.ç~] ]]
+		then
+			echo "You put $resp where is a alpha"
+			t=0
+	else
+		if  [[ $resp -eq 1 ]]
+			then
+				process_id=$(ps -ef |grep java | grep UAE-Switch | awk '{print $2}')
+				diretorio=$(pwdx $process_id | awk '{print $2}')
+				echo "$diretorio"
+				cd $diretorio
+				sleep 500
+				kill -9 $process_id
+				echo "Killed process"
+				arquivo=$(ls -lt |grep jar |grep '3.4.1' |awk '{print $9}')
+				echo "$arquivo foi este que vai ser iniciado"
+				nohup java -jar $arquivo &
+				echo "Start process"
+				erro=0
+				sleep 15
+				while [[ $erro -eq 0 ]]
+					do
+					curr=$(date +%d/%m/%Y-%H:%M:%S)
+					terro=$(grep "${curr}*" nohup.out | grep Error | wc -l)
+					error=$(grep "${curr}*" nohup.out | grep error | wc -l)
+					zerror=$(grep "${curr}*" nohup.out | grep ERROR | wc -l)
+					counterros=$((terro + yerror + zerror))
+					if [[ $counterros -gt 1 ]]
+						then
+						echo "Fail to start process"
+						sleep 5
+					else
+						echo "Application started"
+						erro=1
+						t=1
+						fi
+					done
+			fi
+		fi
+	done
+				
+				
