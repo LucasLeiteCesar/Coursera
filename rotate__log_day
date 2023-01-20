@@ -1,0 +1,32 @@
+#!/bin/bash
+
+servername=`hostname -s`
+
+Y7r=`date --date='7 days ago' +%Y`
+M7n=`date --date='7 days ago' +%b`
+D7t=`date --date='7 days ago' +%d`
+
+Y1r=`date --date='yesterday' +%Y`
+M1n=`date --date='yesterday' +%b`
+D1t=`date --date='yesterday' +%d`
+
+DT=`date --date='yesterday' +%d-%b-%Y`
+
+
+find /bl -name nohup.out -type f > /opt/scripts/.Log_Rotation/temp.txt
+
+for i in `cat /opt/scripts/.Log_Rotation/temp.txt`
+do
+
+NOHUP_DIR=`dirname $i`
+cd $NOHUP_DIR/
+mkdir  Old_Logs
+mv *nohup.out_* $NOHUP_DIR/Old_Logs/
+mv *nohup_* $NOHUP_DIR/Old_Logs/
+mv *nohup*.gz $NOHUP_DIR/Old_Logs/
+mv *nohup*.zip $NOHUP_DIR/Old_Logs/
+mv *nohup-* $NOHUP_DIR/Old_Logs/
+gzip -9rf $NOHUP_DIR/Old_Logs/
+
+done
+~
