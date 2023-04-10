@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# File: arrays.sh
+
+
+
+cd /bl/PayRoute_D360_MADA_02_02
+
+echo "checking"
+
+a=true
+
+while [[ $a == true ]]
+do
+sleep 2
+
+#curr=$(date +%d/%m/%Y-%H:%M:%S)
+time=$(tail  nohup.out |grep 'Generated message' |grep -Po "\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3}")
+rid=$(tail  nohup.out | grep -Po "1023\d{15}")
+
+
+#curr=$(date -d $time)
+
+
+#time=$(date -d $time)
+
+#echo "Variavel curr $curr"
+#echo "Time captured $time"
+#echo "rid captured $rid"
+
+sleep 0.2
+
+
+ridcomp=$(tail nohup.out | grep -Po "1023\d{15}")
+
+echo "rid2 $ridcomp"
+
+
+if [[ $rid == $ridcomp ]]
+then
+time2=$(tail nohup.out |grep 'Processing ECHO_TEST completed' |grep -Po "\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3}")
+
+
+#diff=$(timestamp "$time") - $(timestamp "$time2")
+
+
+
+IFS=".:"
+read -a time1_parts <<< "$time"
+read -a time2_parts <<< "$time2"
+
+diff=$(( ${time2_parts[3]} - ${time1_parts[3]} ))
+
+echo "Time captured $time"
+echo " "
+echo " "
+echo "Diff time  $diff"
+
+        if [[ $diff -gt 500 ]]
+        then
+
+                echo " "
+                echo "increasing time"
+                echo " "
+                break
+                a = false
+        fi
+else
+
+echo "saiu do IF"
+break
+a = false
+
+fi
+
+done
+
+emailid="servicedelivery@paymentology.com"
+mail -s "Please check PayRoute MADA on priority and engage Pt-SD team $rid not complete the ECHO_TEST" $emailid
+
+
