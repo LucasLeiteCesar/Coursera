@@ -5,7 +5,7 @@
 
 cd /bl/PayRoute_D360_MADA_02_02
 
-echo "checking"
+echo "processamento"
 
 a=true
 
@@ -15,7 +15,7 @@ sleep 2
 
 #curr=$(date +%d/%m/%Y-%H:%M:%S)
 time=$(tail  nohup.out |grep 'Generated message' |grep -Po "\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3}")
-rid=$(tail  nohup.out | grep -Po "1023\d{15}")
+rid=$(tail  nohup.out | grep 'Generated message' |grep -Po "1023\d{15}")
 
 
 #curr=$(date -d $time)
@@ -30,7 +30,7 @@ rid=$(tail  nohup.out | grep -Po "1023\d{15}")
 sleep 0.2
 
 
-ridcomp=$(tail nohup.out | grep -Po "1023\d{15}")
+ridcomp=$(tail nohup.out |grep 'Processing ECHO_TEST completed' |grep -Po "1023\d{15}")
 
 echo "rid2 $ridcomp"
 
@@ -50,10 +50,10 @@ read -a time2_parts <<< "$time2"
 
 diff=$(( ${time2_parts[3]} - ${time1_parts[3]} ))
 
-echo "Time captured $time"
+echo "Time Captured $time"
 echo " "
 echo " "
-echo "Diff time  $diff"
+echo "Diff time $diff"
 
         if [[ $diff -gt 500 ]]
         then
